@@ -503,10 +503,10 @@ var rankList=[
 var array=[];
 var array_length=0;
 var table_size=10;
-var start_index=1;
-var end_index=0;
+// var start_index=1;
+// var end_index=0;
 var current_index=1;
-var max_index=0;
+// var max_index=0;
 function preLoadCalculations(){
 array=rankList;
 array_length=array.length;
@@ -519,11 +519,14 @@ if((array_length%table_size)>0){
 function displayIndexButtons(){
 preLoadCalculations()
 $(".index_buttons button").remove()
+$(".index_buttons").append('<button onclick="first()">First</button>')
 $(".index_buttons").append('<button onclick="prev()">Previous</button>')
+
 for(var i=1;i<=max_index;i++){
     $(".index_buttons").append('<button onclick="indexPagination('+i+')" index="'+i+'">'+i+'</button>')
 }
 $(".index_buttons").append('<button onclick="next()">Next</button>');
+$(".index_buttons").append('<button onclick="last()">Last</button>')
 highlightIndexButton();
 }
 
@@ -542,18 +545,22 @@ displayTableRows();
 }
 
 function displayTableRows(){ 
-$(".table table tbody tr").remove();
+// $(".table table tbody tr").remove();
 var tab_start=start_index-1;
 var tab_end=end_index;
+var tableMarkup=""
 for(i=tab_start;i<tab_end;i++){
     var student=array[i];
-    var tr='<tr>'+
+    tableMarkup+='<table class="table table-bordered">'+
+    '<tr>'+
     '<td>'+student['id']+'</td>'+
     '<td>'+student['name']+'</td>'+
     '<td>'+student['email']+'</td>'+ 
-    '</tr>'
-    $(".table table tbody").append(tr); 
+    '</tr>'+
+    '</table>'
+   
 }
+$(".table tbody").html(tableMarkup); 
 }
 
 displayIndexButtons();
@@ -571,6 +578,18 @@ if(current_index>1){
 }
 }
 
+function first(){
+    current_index=1;
+    highlightIndexButton();
+    }
+    
+function last(){
+    array_length=rankList.length;
+    max_index=array_length/table_size;
+    current_index=max_index;
+        highlightIndexButton();
+      }
+      
 function indexPagination(index){
 current_index=parseInt(index);
 highlightIndexButton();
